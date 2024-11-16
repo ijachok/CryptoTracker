@@ -13,4 +13,6 @@ interface CoinDataSource {
         start:ZonedDateTime,
         end:ZonedDateTime
     ):Result<List<CoinPrice>, NetworkError>
+
+    suspend fun searchCoins(query:String, limit:Int):Result<List<Coin>, NetworkError>
 }

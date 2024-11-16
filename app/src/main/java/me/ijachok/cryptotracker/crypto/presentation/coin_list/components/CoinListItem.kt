@@ -20,16 +20,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewDynamicColors
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.ijachok.cryptotracker.crypto.domain.Coin
-import me.ijachok.cryptotracker.crypto.presentation.coin_list.models.CoinUi
-import me.ijachok.cryptotracker.crypto.presentation.coin_list.models.toCoinUi
+import me.ijachok.cryptotracker.crypto.domain.CoinUi
+import me.ijachok.cryptotracker.crypto.domain.toCoinUi
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
-import me.ijachok.cryptotracker.ui.theme.bodyFontFamily
 import me.ijachok.cryptotracker.ui.theme.displayFontFamily
 
 @Composable

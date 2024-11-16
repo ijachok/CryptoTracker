@@ -44,7 +44,7 @@ import me.ijachok.cryptotracker.crypto.presentation.coin_detail.components.InfoC
 import me.ijachok.cryptotracker.crypto.presentation.coin_detail.components.LineChart
 import me.ijachok.cryptotracker.crypto.presentation.coin_list.CoinListState
 import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.previewCoin
-import me.ijachok.cryptotracker.crypto.presentation.coin_list.models.toDisplayableNumber
+import me.ijachok.cryptotracker.crypto.domain.toDisplayableNumber
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 import me.ijachok.cryptotracker.ui.theme.bodyFontFamily
 import me.ijachok.cryptotracker.ui.theme.displayFontFamily

@@ -16,15 +16,16 @@ import me.ijachok.cryptotracker.core.presentation.util.toString
 import me.ijachok.cryptotracker.crypto.presentation.coin_detail.CoinDetailScreen
 import me.ijachok.cryptotracker.crypto.presentation.coin_list.CoinListAction
 import me.ijachok.cryptotracker.crypto.domain.CoinEvent
-import me.ijachok.cryptotracker.crypto.presentation.coin_list.CoinListScreen
-import me.ijachok.cryptotracker.crypto.presentation.coin_list.CoinListViewModel
+import me.ijachok.cryptotracker.crypto.presentation.coin_search.CoinSearchAction
+import me.ijachok.cryptotracker.crypto.presentation.coin_search.CoinSearchScreen
+import me.ijachok.cryptotracker.crypto.presentation.coin_search.CoinSearchViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-fun AdaptiveCoinListDetailPane(
+fun AdaptiveCoinSearchDetailPane(
     modifier: Modifier = Modifier,
-    viewModel:CoinListViewModel = koinViewModel()
+    viewModel: CoinSearchViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
@@ -45,15 +46,14 @@ fun AdaptiveCoinListDetailPane(
         navigator = navigator,
         listPane = {
             AnimatedPane {
-                CoinListScreen(
+                CoinSearchScreen(
                     state = state,
                     onAction = { action ->
                         viewModel.onAction(action)
                         when(action){
-                            is CoinListAction.OnCoinClick ->{
+                            is CoinSearchAction.OnCoinClick ->{
                                 navigator.navigateTo(pane = ListDetailPaneScaffoldRole.Detail)
                             }
-
                             else -> {}
                         }
                     }
@@ -62,7 +62,7 @@ fun AdaptiveCoinListDetailPane(
         },
         detailPane = {
             AnimatedPane(){
-                CoinDetailScreen(state)
+                CoinDetailScreen(state.toListState())
             }
         },
         modifier = modifier

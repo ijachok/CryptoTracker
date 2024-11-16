@@ -26,7 +26,7 @@ class RemoteCoinDataSource(
             httpClient.get(
                 urlString = constructURL("/assets")
             )
-        }.map{ response ->
+        }.map { response ->
             response.data.map { it.toCoin() }
         }
     }
@@ -42,11 +42,24 @@ class RemoteCoinDataSource(
         return safeCall<CoinHistoryDTO> {
             httpClient.get(
                 urlString = constructURL("/assets/$coinId/history")
-            ){
+            ) {
                 parameter("interval", "h6")
                 parameter("start", startMillis)
                 parameter("end", endMillis)
             }
-        }.map { response -> response.data.map{ it.toCoinPrice() } }
+        }.map { response -> response.data.map { it.toCoinPrice() } }
+    }
+
+    override suspend fun searchCoins(query: String, limit: Int): Result<List<Coin>, NetworkError> {
+        return safeCall<CoinsResponseDTO> {
+            httpClient.get(
+                urlString = constructURL("/assets")
+            ){
+                parameter("search", query)
+                parameter("limit", limit)
+            }
+        }.map { response ->
+            response.data.map { it.toCoin() }
+        }
     }
 }

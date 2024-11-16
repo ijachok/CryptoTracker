@@ -27,7 +27,7 @@ android {
             buildConfigField("String", "BASE_URL", "\"https://api.coincap.io/v2/\"")
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -65,6 +65,7 @@ dependencies {
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
+    implementation(libs.androidx.material3.adaptive.navigation.suite.android)
     debugImplementation(libs.bundles.compose.debug)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)

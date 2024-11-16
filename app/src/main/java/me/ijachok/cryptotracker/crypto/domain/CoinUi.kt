@@ -1,9 +1,8 @@
-package me.ijachok.cryptotracker.crypto.presentation.coin_list.models
+package me.ijachok.cryptotracker.crypto.domain
 
 import android.icu.text.NumberFormat
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable
-import me.ijachok.cryptotracker.crypto.domain.Coin
 import me.ijachok.cryptotracker.core.presentation.util.getDrawableIdForCoin
 import me.ijachok.cryptotracker.crypto.presentation.coin_detail.DataPoint
 import java.util.Locale
@@ -33,8 +32,8 @@ fun Coin.toCoinUi(): CoinUi {
         symbol = symbol,
         rank = rank,
         priceUsd = priceUsd.toDisplayableNumber(),
-        marketCapUsd = marketCapUsd.toDisplayableNumber(),
-        changePercent24Hr = changePercent24Hr.toDisplayableNumber(),
+        marketCapUsd = (marketCapUsd?:0.0).toDisplayableNumber(),
+        changePercent24Hr = (changePercent24Hr?:0.0).toDisplayableNumber(),
         iconRes = getDrawableIdForCoin(symbol)
     )
 }

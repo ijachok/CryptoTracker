@@ -5,6 +5,7 @@ import me.ijachok.cryptotracker.core.data.networking.HttpClientFactory
 import me.ijachok.cryptotracker.core.domain.CoinDataSource
 import me.ijachok.cryptotracker.crypto.data.networking.RemoteCoinDataSource
 import me.ijachok.cryptotracker.crypto.presentation.coin_list.CoinListViewModel
+import me.ijachok.cryptotracker.crypto.presentation.coin_search.CoinSearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -15,4 +16,5 @@ val appModule = module {
     singleOf(::RemoteCoinDataSource).bind<CoinDataSource>()
 
     viewModelOf(::CoinListViewModel)
+    viewModelOf(::CoinSearchViewModel)
 }
