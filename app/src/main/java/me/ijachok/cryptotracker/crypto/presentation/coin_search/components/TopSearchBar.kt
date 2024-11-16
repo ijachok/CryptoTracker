@@ -1,22 +1,17 @@
 package me.ijachok.cryptotracker.crypto.presentation.coin_search.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -25,7 +20,6 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -49,6 +43,7 @@ fun TopSearchBar(
     trailingSearchBarIcon: @Composable() (() -> Unit)? = null,
     searchResults: @Composable () -> Unit
 ) {
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -62,7 +57,7 @@ fun TopSearchBar(
             }
         }
         CryptoSearchBar(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f).height(56.dp),
             query = query,
             expanded = expanded,
             onExpandedChange = onExpandedChange,
@@ -98,7 +93,7 @@ fun CryptoSearchBar(
     trailingIcon: @Composable (() -> Unit)? = null,
     searchResults: @Composable () -> Unit
 ) {
-    DockedSearchBar(
+    SearchBar(
         inputField = {
             SearchBarDefaults.InputField(
                 query = query,

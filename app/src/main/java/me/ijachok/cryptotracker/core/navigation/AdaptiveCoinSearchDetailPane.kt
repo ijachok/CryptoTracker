@@ -1,6 +1,8 @@
 package me.ijachok.cryptotracker.core.navigation
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
@@ -13,9 +15,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import me.ijachok.cryptotracker.core.presentation.util.ObserveAsEvents
 import me.ijachok.cryptotracker.core.presentation.util.toString
-import me.ijachok.cryptotracker.crypto.presentation.coin_detail.CoinDetailScreen
-import me.ijachok.cryptotracker.crypto.presentation.coin_list.CoinListAction
 import me.ijachok.cryptotracker.crypto.domain.CoinEvent
+import me.ijachok.cryptotracker.crypto.presentation.coin_detail.CoinDetailScreen
 import me.ijachok.cryptotracker.crypto.presentation.coin_search.CoinSearchAction
 import me.ijachok.cryptotracker.crypto.presentation.coin_search.CoinSearchScreen
 import me.ijachok.cryptotracker.crypto.presentation.coin_search.CoinSearchViewModel
@@ -25,6 +26,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun AdaptiveCoinSearchDetailPane(
     modifier: Modifier = Modifier,
+    innerPaddingValues: PaddingValues,
     viewModel: CoinSearchViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -43,11 +45,13 @@ fun AdaptiveCoinSearchDetailPane(
     }
     val navigator = rememberListDetailPaneScaffoldNavigator<Any>()
     NavigableListDetailPaneScaffold(
+        modifier = modifier,
         navigator = navigator,
         listPane = {
             AnimatedPane {
                 CoinSearchScreen(
                     state = state,
+                    innerPadding = innerPaddingValues,
                     onAction = { action ->
                         viewModel.onAction(action)
                         when(action){
@@ -62,9 +66,8 @@ fun AdaptiveCoinSearchDetailPane(
         },
         detailPane = {
             AnimatedPane(){
-                CoinDetailScreen(state.toListState())
+                CoinDetailScreen(state.toListState(), Modifier.padding(innerPaddingValues))
             }
-        },
-        modifier = modifier
+        }
     )
 }

@@ -278,8 +278,8 @@ fun CryptoTrackerTheme(
         if (!view.isInEditMode) {
             SideEffect {
                 val window = (view.context as Activity).window
-                window.statusBarColor = backgroundColorWithAlpha.toArgb()
-                window.navigationBarColor = backgroundColorWithAlpha.toArgb()
+                window.statusBarColor = Color(0x00000000).toArgb()
+                window.navigationBarColor = Color(0x01000000).toArgb()
                 WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars =
                     !darkTheme
             }

@@ -41,7 +41,7 @@ fun InfoCard(
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
 
-    val cardShape = RoundedCornerShape(4.dp)
+    val cardShape = RoundedCornerShape(12.dp)
     Card(
         modifier = modifier
             .padding(8.dp)

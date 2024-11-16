@@ -51,7 +51,7 @@ fun CoinListItem(
             imageVector = ImageVector.vectorResource(id = coinUi.iconRes),
             contentDescription = coinUi.name,
             tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(85.dp)
+            modifier = Modifier.size(54.dp)
         )
         Column(
             modifier = Modifier.weight(1f)
