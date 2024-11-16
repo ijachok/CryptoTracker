@@ -1,10 +1,13 @@
 package me.ijachok.cryptotracker.crypto.presentation.coin_search
 
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,11 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -41,19 +42,19 @@ import me.ijachok.cryptotracker.R
 import me.ijachok.cryptotracker.core.presentation.util.getDrawableIdForCoin
 import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.CoinListItem
 import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.previewCoin
-import me.ijachok.cryptotracker.crypto.presentation.coin_search.components.TopSearchBar
+import me.ijachok.cryptotracker.crypto.presentation.coin_search.components.CryptoSearchBar
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 import me.ijachok.cryptotracker.ui.theme.displayFontFamily
 
 @Composable
 fun CoinSearchScreen(
     modifier: Modifier = Modifier,
+    innerPadding:PaddingValues,
     state: CoinSearchState,
     onAction: (CoinSearchAction) -> Unit
 ) {
-    Column(
-        modifier = modifier.fillMaxSize()
-    ) {
+
+    Box(Modifier.fillMaxSize()){
         var expanded by remember { mutableStateOf(false) }
 
         LaunchedEffect(state.query) {
@@ -62,9 +63,15 @@ fun CoinSearchScreen(
                 onAction(CoinSearchAction.OnCoinSearchPreview(state.query, 4))
             }
         }
+        val searchBarPadding by animateDpAsState(
+            targetValue = if (expanded) 0.dp else 16.dp, tween(200),
+            label = ""
+        )
 
-        TopSearchBar(
-            modifier = Modifier,
+        CryptoSearchBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal =  searchBarPadding),
             query = state.query,
             expanded = expanded,
             onExpandedChange = { expanded = it },
@@ -82,7 +89,7 @@ fun CoinSearchScreen(
 //                    )
 //                }
 //            },
-            trailingSearchBarIcon = {
+            trailingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Search,
                     contentDescription = null
@@ -92,7 +99,10 @@ fun CoinSearchScreen(
         ) {
 
             if (state.isLoadingPreview) {
-                Box(Modifier.fillMaxWidth().padding(8.dp), contentAlignment = Alignment.Center) {
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(
                         Modifier.height(40.dp)
                     )
@@ -131,26 +141,33 @@ fun CoinSearchScreen(
                     )
                 }
         }
-        if (state.isLoading) {
-            Box(
-                modifier = modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            LazyColumn(
-                modifier = modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(state.coins) { coinUi ->
-                    CoinListItem(
-                        coinUi = coinUi,
-                        onClick = { onAction(CoinSearchAction.OnCoinClick(coinUi)) },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+        Column(
+            modifier = modifier.fillMaxSize()
+        ) {
+
+            if (state.isLoading) {
+                Box(
+                    modifier = modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                LazyColumn(
+                    state = state.listState,
+                    modifier = modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(top = innerPadding.calculateTopPadding() + 72.dp)
+                ) {
+                    items(state.coins) { coinUi ->
+                        CoinListItem(
+                            coinUi = coinUi,
+                            onClick = { onAction(CoinSearchAction.OnCoinClick(coinUi)) },
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
                 }
             }
         }
@@ -164,6 +181,7 @@ private fun CoinSearchScreenPreview() {
         CoinSearchScreen(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background),
+            innerPadding = PaddingValues(),
             state = CoinSearchState(
                 coins = (1..100).map {
                     previewCoin.copy(id = it.toString())
