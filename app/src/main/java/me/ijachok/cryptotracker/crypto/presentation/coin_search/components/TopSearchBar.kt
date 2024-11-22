@@ -2,6 +2,7 @@ package me.ijachok.cryptotracker.crypto.presentation.coin_search.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -50,14 +53,16 @@ fun TopSearchBar(
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if(leadingIcon != {}){
+        if (leadingIcon != {}) {
             AnimatedVisibility(visible = !expanded) {
                 leadingIcon()
                 Spacer(Modifier.width(8.dp))
             }
         }
         CryptoSearchBar(
-            modifier = Modifier.weight(1f).height(56.dp),
+            modifier = Modifier
+                .weight(1f)
+                .height(56.dp),
             query = query,
             expanded = expanded,
             onExpandedChange = onExpandedChange,
@@ -69,7 +74,7 @@ fun TopSearchBar(
             trailingIcon = trailingSearchBarIcon,
             searchResults = searchResults
         )
-        if(trailingIcon != {}){
+        if (trailingIcon != {}) {
             AnimatedVisibility(visible = !expanded) {
                 Spacer(Modifier.width(8.dp))
                 trailingIcon()
@@ -93,9 +98,20 @@ fun CryptoSearchBar(
     trailingIcon: @Composable (() -> Unit)? = null,
     searchResults: @Composable () -> Unit
 ) {
+
     SearchBar(
         inputField = {
             SearchBarDefaults.InputField(
+                modifier = if (expanded) Modifier
+                else Modifier
+                    .border(1.dp, MaterialTheme.colorScheme.primary, shape)
+                    .shadow(
+                        elevation = 15.dp,
+                        shape = shape,
+                        ambientColor = MaterialTheme.colorScheme.primary,
+                        spotColor = MaterialTheme.colorScheme.primary,
+                    )
+                    .background(MaterialTheme.colorScheme.surfaceContainer),
                 query = query,
                 onQueryChange = onQueryChange,
                 onSearch = {

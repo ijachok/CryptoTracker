@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import me.ijachok.cryptotracker.R
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 
@@ -41,6 +42,7 @@ fun TopLabelBar(modifier: Modifier = Modifier, iconButton: @Composable () -> Uni
         Text(
             text = stringResource(R.string.app_name),
             style = MaterialTheme.typography.headlineMedium,
+            fontSize = 24.sp,
             color = MaterialTheme.colorScheme.onSurface
         )
         Spacer(Modifier.weight(1f))
