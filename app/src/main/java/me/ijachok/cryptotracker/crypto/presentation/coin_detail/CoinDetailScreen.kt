@@ -90,6 +90,7 @@ fun CoinDetailScreen(
                 fontSize = 40.sp,
                 fontWeight = FontWeight.Black,
                 fontFamily = displayFontFamily,
+                lineHeight = 40.sp,
                 textAlign = TextAlign.Center,
                 color = textColor
             )

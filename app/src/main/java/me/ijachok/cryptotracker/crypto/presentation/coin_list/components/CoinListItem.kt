@@ -35,11 +35,7 @@ fun CoinListItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val contentColor = if(isSystemInDarkTheme()) {
-        Color.White
-    } else {
-        Color.Black
-    }
+    val contentColor = MaterialTheme.colorScheme.onSurface
     Row(
         modifier = modifier
             .clickable(onClick = onClick)
