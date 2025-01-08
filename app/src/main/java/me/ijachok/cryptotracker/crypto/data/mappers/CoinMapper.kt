@@ -1,8 +1,11 @@
 package me.ijachok.cryptotracker.crypto.data.mappers
 
+import me.ijachok.cryptotracker.crypto.data.local.CoinAmountEntity
 import me.ijachok.cryptotracker.crypto.data.networking.dto.CoinDTO
 import me.ijachok.cryptotracker.crypto.data.networking.dto.CoinPriceDTO
 import me.ijachok.cryptotracker.crypto.domain.Coin
+import me.ijachok.cryptotracker.crypto.domain.CoinAmount
+import me.ijachok.cryptotracker.crypto.domain.CoinPortfolio
 import me.ijachok.cryptotracker.crypto.domain.CoinPrice
 import java.time.Instant
 import java.time.ZoneId
@@ -25,4 +28,17 @@ fun CoinPriceDTO.toCoinPrice(): CoinPrice {
         priceUsd = priceUsd,
         dateTime = Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault())
     )
+}
+
+fun CoinAmount.toCoinEntity():CoinAmountEntity{
+    return CoinAmountEntity(
+        id = id,
+        name = name,
+        symbol = symbol,
+        amountOwned = amountOwned
+    )
+}
+
+fun CoinPortfolio.toCoinAmount(): CoinAmount {
+    return CoinAmount(id = id, name = name, symbol = symbol, amountOwned = amountOwned)
 }

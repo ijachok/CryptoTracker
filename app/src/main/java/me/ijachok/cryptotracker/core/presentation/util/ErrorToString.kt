@@ -2,6 +2,7 @@ package me.ijachok.cryptotracker.core.presentation.util
 
 import android.content.Context
 import me.ijachok.cryptotracker.R
+import me.ijachok.cryptotracker.core.domain.util.LocalDatabaseError
 import me.ijachok.cryptotracker.core.domain.util.NetworkError
 
 fun NetworkError.toString(context: Context):String {
@@ -13,6 +14,11 @@ fun NetworkError.toString(context: Context):String {
         NetworkError.SERIALIZATION -> R.string.error_serialisation
         NetworkError.UNKNOWN -> R.string.error_unknown
     }
-
+    return context.getString(resId)
+}
+fun LocalDatabaseError.toString(context: Context):String {
+    val resId = when(this){
+        LocalDatabaseError.UNKNOWN -> R.string.error_unknown
+    }
     return context.getString(resId)
 }

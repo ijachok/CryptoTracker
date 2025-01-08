@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.ijachok.cryptotracker.crypto.domain.DisplayableNumber
@@ -26,8 +27,10 @@ import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 
 @Composable
 fun PriceChange(
+    modifier: Modifier = Modifier,
     change: DisplayableNumber,
-    modifier: Modifier = Modifier
+    fontSize:TextUnit = 14.sp,
+    showArrow:Boolean = true
 ) {
     val contentColor = if(change.value < 0.0) {
         MaterialTheme.colorScheme.onErrorContainer
@@ -40,6 +43,12 @@ fun PriceChange(
         MaterialTheme.colorScheme.primaryContainer
     }
 
+    val text = if(!showArrow && change.value > 0.0){
+        "+${change.formatted}"
+    } else if(showArrow && change.value < 0.0){
+        change.formatted.drop(1)
+    }else change.formatted
+
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(100f))
@@ -47,20 +56,22 @@ fun PriceChange(
             .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            imageVector = if(change.value < 0.0) {
-                Icons.Rounded.KeyboardArrowDown
-            } else {
-                Icons.Rounded.KeyboardArrowUp
-            },
-            contentDescription = null,
-            modifier = Modifier.size(20.dp),
-            tint = contentColor
-        )
+        if(showArrow){
+            Icon(
+                imageVector = if (change.value < 0.0) {
+                    Icons.Rounded.KeyboardArrowDown
+                } else {
+                    Icons.Rounded.KeyboardArrowUp
+                },
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
+                tint = contentColor
+            )
+        }
         Text(
-            text = "${change.formatted} %",
+            text = "${text}%",
             color = contentColor,
-            fontSize = 14.sp,
+            fontSize = fontSize,
             fontWeight = FontWeight.Medium
         )
     }

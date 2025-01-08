@@ -1,5 +1,6 @@
 package me.ijachok.cryptotracker.crypto.presentation.coin_list
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
@@ -14,9 +15,9 @@ import me.ijachok.cryptotracker.core.domain.CoinDataSource
 import me.ijachok.cryptotracker.core.domain.util.onError
 import me.ijachok.cryptotracker.core.domain.util.onSuccess
 import me.ijachok.cryptotracker.crypto.domain.CoinEvent
-import me.ijachok.cryptotracker.crypto.presentation.coin_detail.DataPoint
 import me.ijachok.cryptotracker.crypto.domain.CoinUi
 import me.ijachok.cryptotracker.crypto.domain.toCoinUi
+import me.ijachok.cryptotracker.crypto.presentation.coin_detail.DataPoint
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
@@ -25,7 +26,10 @@ class CoinListViewModel(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CoinListState())
-    val state = _state.onStart { loadCoins() }
+    val state = _state.onStart {
+        Log.d("abba", "coinlistvm: init")
+        loadCoins()
+    }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
@@ -70,7 +74,7 @@ class CoinListViewModel(
                     }
                 }
                 .onError { error ->
-                    _events.send(CoinEvent.Error(error))
+                    _events.send(CoinEvent.NetError(error))
                 }
         }
     }
@@ -86,7 +90,7 @@ class CoinListViewModel(
                 }
                 .onError { error ->
                     _state.update { it.copy(isLoading = false) }
-                    _events.send(CoinEvent.Error(error))
+                    _events.send(CoinEvent.NetError(error))
                 }
         }
     }

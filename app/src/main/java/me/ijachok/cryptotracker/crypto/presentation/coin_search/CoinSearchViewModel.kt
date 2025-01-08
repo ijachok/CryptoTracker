@@ -71,7 +71,7 @@ class CoinSearchViewModel(
                     }
                 }
                 .onError { error ->
-                    _events.send(CoinEvent.Error(error))
+                    _events.send(CoinEvent.NetError(error))
                 }
         }
     }
@@ -89,7 +89,7 @@ class CoinSearchViewModel(
                 }
                 .onError { error ->
                     _state.update { it.copy(isLoading = false) }
-                    _events.send(CoinEvent.Error(error))
+                    _events.send(CoinEvent.NetError(error))
                 }
         }
     }
@@ -105,7 +105,7 @@ class CoinSearchViewModel(
                 }
                 .onError { error ->
                     _state.update { it.copy(isLoadingPreview = false) }
-                    _events.send(CoinEvent.Error(error))
+                    _events.send(CoinEvent.NetError(error))
                 }
         }
     }

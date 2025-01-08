@@ -34,7 +34,15 @@ fun AdaptiveCoinSearchDetailPane(
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
-            is CoinEvent.Error -> {
+            is CoinEvent.NetError -> {
+                Toast.makeText(
+                    context,
+                    event.error.toString(context),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is CoinEvent.LocalDataError -> {
                 Toast.makeText(
                     context,
                     event.error.toString(context),

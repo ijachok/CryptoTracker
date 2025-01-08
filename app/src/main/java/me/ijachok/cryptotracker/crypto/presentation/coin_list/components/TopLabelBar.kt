@@ -27,7 +27,7 @@ import me.ijachok.cryptotracker.R
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 
 @Composable
-fun TopLabelBar(modifier: Modifier = Modifier, iconButton: @Composable () -> Unit) {
+fun TopLabelBar(modifier: Modifier = Modifier, title:String = stringResource(R.string.app_name), iconButton: @Composable () -> Unit) {
     Row(
         modifier
             .fillMaxWidth()
@@ -40,7 +40,7 @@ fun TopLabelBar(modifier: Modifier = Modifier, iconButton: @Composable () -> Uni
         )
         Spacer(Modifier.width(8.dp))
         Text(
-            text = stringResource(R.string.app_name),
+            text = title,
             style = MaterialTheme.typography.headlineMedium,
             fontSize = 24.sp,
             color = MaterialTheme.colorScheme.onSurface

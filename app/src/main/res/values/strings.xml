@@ -4,7 +4,7 @@
     <string name="error_too_many_requests">Too many requests</string>
     <string name="error_no_internet">You are offline</string>
     <string name="error_unknown">Unknown error</string>
-    <string name="error_serialisation">Couldn`t proccess data</string>
+    <string name="error_serialisation">Couldn`t process data</string>
     <string name="market_cap">Market cap</string>
     <string name="price">Price</string>
     <string name="change_last_24h">Change last 24h</string>
@@ -13,4 +13,6 @@
     <string name="global">Global</string>
     <string name="detail">Detail</string>
     <string name="no_results">No search results</string>
+    <string name="total_balance">Total balance</string>
+    <string name="portfolio">Portfolio</string>
 </resources>
