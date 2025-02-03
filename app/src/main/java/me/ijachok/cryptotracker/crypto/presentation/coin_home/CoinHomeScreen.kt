@@ -49,10 +49,10 @@ import me.ijachok.cryptotracker.crypto.domain.CoinPortfolio
 import me.ijachok.cryptotracker.crypto.domain.CoinPortfolioUi
 import me.ijachok.cryptotracker.crypto.domain.DisplayableNumber
 import me.ijachok.cryptotracker.crypto.domain.toCoinPortfolioUI
+import me.ijachok.cryptotracker.crypto.domain.toCoinUi
 import me.ijachok.cryptotracker.crypto.domain.toDisplayableNumber
 import me.ijachok.cryptotracker.crypto.presentation.coin_home.components.CoinPortfolioCard
 import me.ijachok.cryptotracker.crypto.presentation.coin_home.components.CoinPortfolioListItemSmall
-import me.ijachok.cryptotracker.crypto.presentation.coin_portfolio.CoinPortfolioAction
 import me.ijachok.cryptotracker.crypto.presentation.coin_portfolio.components.AddCoinDialog
 import me.ijachok.cryptotracker.crypto.presentation.components.CryptoOutlinedButton
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
@@ -107,7 +107,7 @@ fun CoinHomeScreen(
                 CryptoOutlinedButton(
                     modifier = Modifier,
                     text = stringResource(R.string.add_coin),
-                    onClick = {showAddCoinDialog = true}
+                    onClick = { showAddCoinDialog = true }
                 )
             }
         }
@@ -143,7 +143,10 @@ fun CoinHomeScreen(
                 Modifier
                     .fillMaxWidth(),
                 portfolioCoins = state.portfolio,
-                contentPaddingValues = PaddingValues(horizontal = 16.dp)
+                contentPaddingValues = PaddingValues(horizontal = 16.dp),
+                onClick = {
+                    onAction(CoinHomeAction.OnCoinClick(it.toCoinUi()))
+                }
             )
             Spacer(Modifier.height(16.dp))
             PortfolioSection(
@@ -164,7 +167,7 @@ fun CoinHomeScreen(
             onConfirm = {
                 onAction(CoinHomeAction.OnCoinAdd(it))
                 showAddCoinDialog = false
-                        },
+            },
             onCancel = { showAddCoinDialog = false },
             searchCoin = {
                 onAction(CoinHomeAction.OnCoinSearchHitList(it))
@@ -201,7 +204,8 @@ fun TotalBalanceSection(modifier: Modifier = Modifier, balance: DisplayableNumbe
 fun CoinCardsSection(
     modifier: Modifier = Modifier,
     portfolioCoins: List<CoinPortfolioUi>,
-    contentPaddingValues: PaddingValues = PaddingValues()
+    contentPaddingValues: PaddingValues = PaddingValues(),
+    onClick: (coinPortfolioUi: CoinPortfolioUi) -> Unit
 ) {
     LazyRow(
         modifier = modifier,
@@ -211,8 +215,13 @@ fun CoinCardsSection(
     ) {
         items(
             items = portfolioCoins,
-            key = { coinPortfolio -> coinPortfolio.symbol }) { coinPortfolioUi ->
-            CoinPortfolioCard(Modifier, coinPortfolioUi)
+            key = { coinPortfolio -> coinPortfolio.symbol }
+        ) { coinPortfolioUi ->
+            CoinPortfolioCard(
+                modifier = Modifier,
+                coinPortfolioUi = coinPortfolioUi,
+                onClick = { onClick(coinPortfolioUi) }
+            )
         }
     }
 }

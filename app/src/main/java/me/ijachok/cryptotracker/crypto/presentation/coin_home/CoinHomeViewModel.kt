@@ -117,6 +117,7 @@ class CoinHomeViewModel(
     }
 
     private fun selectCoin(coinUi: CoinUi) {
+        _homeState.update { it.copy(selectedCoin = coinUi) }
         _portfolioState.update { it.copy(selectedCoin = coinUi) }
         viewModelScope.launch {
             remoteCoinDataSource.getCoinHistory(
@@ -134,6 +135,9 @@ class CoinHomeViewModel(
                                 xLabel = DateTimeFormatter.ofPattern("ha\nM/d").format(it.dateTime)
                             )
                         }
+                    _homeState.update {
+                        it.copy(selectedCoin = it.selectedCoin?.copy(coinPriceHistory = dataPoints))
+                    }
                     _portfolioState.update {
                         it.copy(selectedCoin = it.selectedCoin?.copy(coinPriceHistory = dataPoints))
                     }

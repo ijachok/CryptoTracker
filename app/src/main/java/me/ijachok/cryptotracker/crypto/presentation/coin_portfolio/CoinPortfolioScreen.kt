@@ -173,7 +173,13 @@ fun CoinPortfolioScreen(
                     modifier = Modifier.fillMaxWidth(),
                     coinPortfolioUi = coinUi,
                     inEditMode = state.inEditMode,
-                    onCoinClick = { onAction(CoinPortfolioAction.OnCoinClick(coinUi)) },
+                    onCoinClick = {
+                        if (!state.inEditMode ) onAction(
+                            CoinPortfolioAction.OnCoinClick(
+                                coinUi
+                            )
+                        )
+                    },
                     onCoinDelete = {
                         coinPortfolioToDelete = coinUi
                         showDeleteCoinDialog = true
@@ -220,11 +226,14 @@ fun CoinPortfolioScreen(
             )
         }
 
-        if(showDeleteCoinDialog && coinPortfolioToDelete !=null){
+        if (showDeleteCoinDialog && coinPortfolioToDelete != null) {
             SimpleDialog(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(R.string.delete_coin),
-                subtitle = stringResource(R.string.delete_coin_from_portfolio, coinPortfolioToDelete!!.name),
+                subtitle = stringResource(
+                    R.string.delete_coin_from_portfolio,
+                    coinPortfolioToDelete!!.name
+                ),
                 confirmButtonText = stringResource(R.string.delete),
                 cancelButtonText = stringResource(R.string.cancel),
                 onConfirm = {

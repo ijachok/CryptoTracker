@@ -2,6 +2,7 @@ package me.ijachok.cryptotracker.crypto.presentation.coin_home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,11 @@ import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.PriceCh
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 
 @Composable
-fun CoinPortfolioCard(modifier: Modifier = Modifier, coinPortfolioUi: CoinPortfolioUi) {
+fun CoinPortfolioCard(
+    modifier: Modifier = Modifier,
+    coinPortfolioUi: CoinPortfolioUi,
+    onClick:() -> Unit
+) {
     val cardShape = RoundedCornerShape(12.dp)
     Column(
         modifier
@@ -40,6 +45,7 @@ fun CoinPortfolioCard(modifier: Modifier = Modifier, coinPortfolioUi: CoinPortfo
             .shadow(5.dp, cardShape, spotColor = MaterialTheme.colorScheme.primary)
             .background(MaterialTheme.colorScheme.surface)
             .clip(cardShape)
+            .clickable { onClick() }
             .border(width = 1.dp, color = MaterialTheme.colorScheme.primary, shape = cardShape)
             .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -94,7 +100,8 @@ private fun CPCPrev() {
                 .padding(16.dp)) {
             CoinPortfolioCard(
                 Modifier,
-                coinPortfolioPrev.toCoinPortfolioUI()
+                coinPortfolioPrev.toCoinPortfolioUI(),
+                {}
             )
         }
     }
