@@ -1,10 +1,14 @@
 package me.ijachok.cryptotracker.crypto.presentation.coin_search
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -23,18 +27,21 @@ import java.time.format.DateTimeFormatter
 class CoinSearchViewModel(
     private val coinDataSource: CoinDataSource
 ) : ViewModel() {
+
     private val _state = MutableStateFlow(CoinSearchState())
-    val state = _state.onStart {searchCoin("btc") }
+    val state = _state.onStart { searchCoin("btc") }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
             CoinSearchState()
         )
+    var query by mutableStateOf("")
+        private set
+    private val _searchPreviewCoins = MutableStateFlow<List<CoinUi>>(listOf())
+    val searchPreviewCoins = _searchPreviewCoins.asStateFlow()
 
     private val _events = Channel<CoinEvent>()
     val events = _events.receiveAsFlow()
-
-    private var queryLastUpdated = System.currentTimeMillis()
 
     fun onAction(action: CoinSearchAction) {
         when (action) {
@@ -100,8 +107,9 @@ class CoinSearchViewModel(
             coinDataSource.searchCoins(query = query, limit = limit)
                 .onSuccess { coins ->
                     _state.update { state ->
-                        state.copy(isLoadingPreview = false, searchPreviewCoins = coins.map { it.toCoinUi() })
+                        state.copy(isLoadingPreview = false)
                     }
+                    _searchPreviewCoins.update { coins.map { it.toCoinUi() } }
                 }
                 .onError { error ->
                     _state.update { it.copy(isLoadingPreview = false) }
@@ -111,6 +119,6 @@ class CoinSearchViewModel(
     }
 
     private fun updateQuery(newQuery: String) {
-        _state.update { it.copy(query = newQuery) }
+        query = newQuery
     }
 }

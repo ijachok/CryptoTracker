@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import me.ijachok.cryptotracker.R
 import me.ijachok.cryptotracker.core.presentation.util.getDrawableIdForCoin
+import me.ijachok.cryptotracker.crypto.domain.CoinUi
 import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.CoinListItem
 import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.previewCoinUi
 import me.ijachok.cryptotracker.crypto.presentation.coin_search.components.CryptoSearchBar
@@ -51,16 +52,18 @@ fun CoinSearchScreen(
     modifier: Modifier = Modifier,
     innerPadding:PaddingValues,
     state: CoinSearchState,
+    query:String,
+    searchPreviewCoins: List<CoinUi>,
     onAction: (CoinSearchAction) -> Unit
 ) {
 
     Box(Modifier.fillMaxSize()){
         var expanded by remember { mutableStateOf(false) }
 
-        LaunchedEffect(state.query) {
-            if (state.query.isNotEmpty()) {
+        LaunchedEffect(query) {
+            if (query.isNotEmpty()) {
                 delay(500)
-                onAction(CoinSearchAction.OnCoinSearchPreview(state.query, 4))
+                onAction(CoinSearchAction.OnCoinSearchPreview(query, 4))
             }
         }
         val searchBarPadding by animateDpAsState(
@@ -72,23 +75,14 @@ fun CoinSearchScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal =  searchBarPadding),
-            query = state.query,
+            query = query,
             expanded = expanded,
             onExpandedChange = { expanded = it },
             onSearch = {
                 expanded = false
-                onAction(CoinSearchAction.OnCoinSearch(state.query))
+                onAction(CoinSearchAction.OnCoinSearch(query))
             },
             onQueryChange = { onAction(CoinSearchAction.OnQueryChange(it)) },
-//            leadingIcon = {
-//                IconButton(onClick = {}) {
-//                    Icon(
-//                        imageVector = Icons.Outlined.Menu,
-//                        contentDescription = null,
-//                        tint = MaterialTheme.colorScheme.onBackground
-//                    )
-//                }
-//            },
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Search,
@@ -107,7 +101,7 @@ fun CoinSearchScreen(
                         Modifier.height(40.dp)
                     )
                 }
-            } else if (state.searchPreviewCoins.isEmpty()) {
+            } else if (searchPreviewCoins.isEmpty()) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -116,7 +110,7 @@ fun CoinSearchScreen(
                     textAlign = TextAlign.Center
                 )
             } else
-                state.searchPreviewCoins.forEachIndexed { index, coinUi ->
+                searchPreviewCoins.forEachIndexed { index, coinUi ->
                     ListItem(
                         modifier = Modifier.clickable {
                             onAction(CoinSearchAction.OnCoinClick(coinUi))
@@ -186,10 +180,11 @@ private fun CoinSearchScreenPreview() {
                 coins = (1..100).map {
                     previewCoinUi.copy(id = it.toString())
                 },
-                searchPreviewCoins = (1..5).map {
-                    previewCoinUi.copy(id = it.toString())
-                }
             ),
+            query = "",
+            searchPreviewCoins = (1..5).map {
+                previewCoinUi.copy(id = it.toString())
+            },
             onAction = {}
         )
     }

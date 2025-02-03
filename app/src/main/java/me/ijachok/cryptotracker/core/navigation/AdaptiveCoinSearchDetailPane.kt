@@ -9,6 +9,7 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,8 +30,10 @@ fun AdaptiveCoinSearchDetailPane(
     innerPaddingValues: PaddingValues,
     viewModel: CoinSearchViewModel = koinViewModel()
 ) {
-    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val query = viewModel.query
+    val searchPreviewCoins by viewModel.searchPreviewCoins.collectAsState()
 
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
@@ -58,8 +61,10 @@ fun AdaptiveCoinSearchDetailPane(
         listPane = {
             AnimatedPane {
                 CoinSearchScreen(
-                    state = state,
                     innerPadding = innerPaddingValues,
+                    state = state,
+                    query = query,
+                    searchPreviewCoins = searchPreviewCoins,
                     onAction = { action ->
                         viewModel.onAction(action)
                         when(action){
