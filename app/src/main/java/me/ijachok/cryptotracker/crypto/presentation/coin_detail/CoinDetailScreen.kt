@@ -43,7 +43,7 @@ import me.ijachok.cryptotracker.crypto.presentation.coin_detail.components.InfoC
 import me.ijachok.cryptotracker.crypto.presentation.coin_detail.components.InfoCardSize
 import me.ijachok.cryptotracker.crypto.presentation.coin_detail.components.LineChart
 import me.ijachok.cryptotracker.crypto.presentation.coin_list.CoinListState
-import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.previewCoin
+import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.previewCoinUi
 import me.ijachok.cryptotracker.crypto.domain.toDisplayableNumber
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 import me.ijachok.cryptotracker.ui.theme.bodyFontFamily
@@ -185,7 +185,7 @@ private fun CoinDetailScreenPreview() {
     CryptoTrackerTheme {
         CoinDetailScreen(
             state = CoinListState(
-                selectedCoin = previewCoin,
+                selectedCoin = previewCoinUi,
             ),
             modifier = Modifier.background(
                 MaterialTheme.colorScheme.background

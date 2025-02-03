@@ -15,4 +15,21 @@
     <string name="no_results">No search results</string>
     <string name="total_balance">Total balance</string>
     <string name="portfolio">Portfolio</string>
+    <string name="portfolio_edit">Edit portfolio</string>
+    <string name="editing">Editing</string>
+    <string name="search_coin_name">Search coin name</string>
+    <string name="amount_owned">Amount owned</string>
+    <string name="not_a_valid_number">Not a valid number</string>
+    <string name="add_coin">Add coin</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="coin_alredy_exists">Coin already exists</string>
+    <string name="replace_coin_amount">Replace %1$s amount?</string>
+    <string name="replace">Replace</string>
+    <string name="coin_doesnt_exist">Coin doesn`t exist</string>
+    <string name="delete_coin">Delete coin</string>
+    <string name="delete_coin_from_portfolio">Delete %1$s from portfolio?</string>
+    <string name="delete">Delete</string>
+    <string name="no_coins_in_portfolio">No coins in portfolio yet</string>
+    <string name="add_crypto_and_it_will_show_up_here">Add crypto and it will show up here.</string>
 </resources>

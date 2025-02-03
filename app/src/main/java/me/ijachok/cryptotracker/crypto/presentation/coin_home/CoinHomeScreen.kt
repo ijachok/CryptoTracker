@@ -22,12 +22,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowOutward
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,14 +44,17 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.ijachok.cryptotracker.R
-import me.ijachok.cryptotracker.crypto.data.mappers.toCoinAmount
+import me.ijachok.cryptotracker.crypto.domain.Coin
 import me.ijachok.cryptotracker.crypto.domain.CoinPortfolio
 import me.ijachok.cryptotracker.crypto.domain.CoinPortfolioUi
 import me.ijachok.cryptotracker.crypto.domain.DisplayableNumber
 import me.ijachok.cryptotracker.crypto.domain.toCoinPortfolioUI
 import me.ijachok.cryptotracker.crypto.domain.toDisplayableNumber
 import me.ijachok.cryptotracker.crypto.presentation.coin_home.components.CoinPortfolioCard
-import me.ijachok.cryptotracker.crypto.presentation.coin_home.components.CoinPortfolioListItem
+import me.ijachok.cryptotracker.crypto.presentation.coin_home.components.CoinPortfolioListItemSmall
+import me.ijachok.cryptotracker.crypto.presentation.coin_portfolio.CoinPortfolioAction
+import me.ijachok.cryptotracker.crypto.presentation.coin_portfolio.components.AddCoinDialog
+import me.ijachok.cryptotracker.crypto.presentation.components.CryptoOutlinedButton
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 import me.ijachok.cryptotracker.ui.theme.bodyFontFamily
 import me.ijachok.cryptotracker.ui.theme.displayFontFamily
@@ -58,8 +64,12 @@ fun CoinHomeScreen(
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
     state: CoinHomeState,
+    coinHintList: List<Coin>,
+    onPortfolioClick: () -> Unit,
     onAction: (CoinHomeAction) -> Unit
 ) {
+    var showAddCoinDialog by remember { mutableStateOf(false) }
+
     if (state.isLoading) {
         Box(
             modifier = modifier
@@ -67,6 +77,39 @@ fun CoinHomeScreen(
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator()
+        }
+    } else if (state.portfolio.isEmpty()) {
+        Box(
+            modifier = modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = ":(",
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontSize = 32.sp
+                )
+                Text(
+                    text = stringResource(R.string.no_coins_in_portfolio),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.headlineMedium
+                )
+                Text(
+                    text = stringResource(R.string.add_crypto_and_it_will_show_up_here),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                CryptoOutlinedButton(
+                    modifier = Modifier,
+                    text = stringResource(R.string.add_coin),
+                    onClick = {showAddCoinDialog = true}
+                )
+            }
         }
     } else {
         Box(
@@ -109,15 +152,24 @@ fun CoinHomeScreen(
                     .fillMaxWidth(),
                 state.portfolio,
                 state.balance
-            ){
-
+            ) {
+                onPortfolioClick()
             }
-            Button(onClick = {
-                onAction(CoinHomeAction.OnPortfolioEdit(
-                    coinPortfolioListPrev.map { it.toCoinAmount() }
-                ))
-            }) { Text("Insert test portfolio") }
         }
+    }
+    if (showAddCoinDialog) {
+        AddCoinDialog(
+            modifier = Modifier,
+            coinHintList = coinHintList,
+            onConfirm = {
+                onAction(CoinHomeAction.OnCoinAdd(it))
+                showAddCoinDialog = false
+                        },
+            onCancel = { showAddCoinDialog = false },
+            searchCoin = {
+                onAction(CoinHomeAction.OnCoinSearchHitList(it))
+            }
+        )
     }
 
 }
@@ -170,7 +222,7 @@ fun PortfolioSection(
     modifier: Modifier = Modifier,
     portfolioCoins: List<CoinPortfolioUi>,
     totalBalance: Double,
-    onClick:() -> Unit
+    onClick: () -> Unit
 ) {
     val cardShape = RoundedCornerShape(12.dp)
     Column(
@@ -201,7 +253,7 @@ fun PortfolioSection(
         Spacer(Modifier.height(16.dp))
         Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             for (coinPortfolio in portfolioCoins.take(5)) {
-                CoinPortfolioListItem(Modifier, coinPortfolio, totalBalance)
+                CoinPortfolioListItemSmall(Modifier, coinPortfolio, totalBalance)
             }
         }
     }
@@ -217,13 +269,37 @@ private fun CHSPrev() {
                 .background(MaterialTheme.colorScheme.background)
         ) {
             CoinHomeScreen(
+                modifier = Modifier,
+                paddingValues = PaddingValues(),
+                state = CoinHomeState(
+                    false,
+                    coinPortfolioListPrev.map { it.toCoinPortfolioUI() }
+                ),
+                coinHintList = listOf(),
+                onPortfolioClick = { }
+            ) { }
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun CHSPrevEmpty() {
+    CryptoTrackerTheme {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+        ) {
+            CoinHomeScreen(
                 Modifier,
                 paddingValues = PaddingValues(),
                 CoinHomeState(
                     false,
-                    29283744198.0,
-                    coinPortfolioListPrev.map { it.toCoinPortfolioUI() }
-                )
+                    listOf()
+                ),
+                coinHintList = listOf(),
+                onPortfolioClick = { }
             ) { }
         }
     }

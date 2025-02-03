@@ -26,10 +26,7 @@ class CoinListViewModel(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(CoinListState())
-    val state = _state.onStart {
-        Log.d("abba", "coinlistvm: init")
-        loadCoins()
-    }
+    val state = _state.onStart { loadCoins() }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),

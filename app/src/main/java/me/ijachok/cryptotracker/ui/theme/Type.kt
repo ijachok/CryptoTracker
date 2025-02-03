@@ -78,7 +78,8 @@ val CryptoTrackerTypography = Typography(
     headlineMedium = TextStyle(
         fontFamily = displayFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 18.sp
+        fontSize = 18.sp,
+        lineHeight = 18.sp
     )
 )
 

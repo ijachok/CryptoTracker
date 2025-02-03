@@ -13,6 +13,6 @@ interface CoinDao {
     @Query("SELECT * FROM owned_coins")
     fun getAllCoins(): List<CoinAmountEntity>
 
-    @Query("DELETE FROM owned_coins")
-    suspend fun clearCoins()
+    @Query("DELETE FROM owned_coins WHERE id = :id")
+    suspend fun deleteCoin(id:String)
 }

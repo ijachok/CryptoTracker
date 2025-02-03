@@ -41,7 +41,7 @@ import kotlinx.coroutines.delay
 import me.ijachok.cryptotracker.R
 import me.ijachok.cryptotracker.core.presentation.util.getDrawableIdForCoin
 import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.CoinListItem
-import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.previewCoin
+import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.previewCoinUi
 import me.ijachok.cryptotracker.crypto.presentation.coin_search.components.CryptoSearchBar
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 import me.ijachok.cryptotracker.ui.theme.displayFontFamily
@@ -184,10 +184,10 @@ private fun CoinSearchScreenPreview() {
             innerPadding = PaddingValues(),
             state = CoinSearchState(
                 coins = (1..100).map {
-                    previewCoin.copy(id = it.toString())
+                    previewCoinUi.copy(id = it.toString())
                 },
                 searchPreviewCoins = (1..5).map {
-                    previewCoin.copy(id = it.toString())
+                    previewCoinUi.copy(id = it.toString())
                 }
             ),
             onAction = {}

@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.androidx.material3.adaptive.navigation.suite.android)
     debugImplementation(libs.bundles.compose.debug)
+    implementation(libs.androidx.navigation.compose)
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 

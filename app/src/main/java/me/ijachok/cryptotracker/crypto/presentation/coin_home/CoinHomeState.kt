@@ -7,6 +7,8 @@ import me.ijachok.cryptotracker.crypto.domain.DisplayableNumber
 
 data class CoinHomeState(
     val isLoading: Boolean = false,
-    val balance:Double = 0.0,
     val portfolio:List<CoinPortfolioUi> = emptyList()
-)
+){
+    val balance: Double
+        get() = portfolio.sumOf { it.amount.value * it.priceUsd.value }
+}

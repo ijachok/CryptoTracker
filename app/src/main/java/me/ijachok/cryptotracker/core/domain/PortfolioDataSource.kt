@@ -8,4 +8,5 @@ import me.ijachok.cryptotracker.crypto.domain.CoinPortfolio
 interface PortfolioDataSource {
     suspend fun insertCoins(coins: List<CoinAmount>)
     suspend fun getCoinAmounts():Result<List<CoinAmount>, LocalDatabaseError>
+    suspend fun deleteCoin(coinId:String)
 }

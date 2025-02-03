@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.CoinListItem
 import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.TopLabelBar
-import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.previewCoin
+import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.previewCoinUi
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 
 @Composable
@@ -74,7 +74,7 @@ private fun CoinListScreenPreview() {
                 .background(MaterialTheme.colorScheme.background),
             state = CoinListState(
                 coins = (1..100).map {
-                    previewCoin.copy(id = it.toString())
+                    previewCoinUi.copy(id = it.toString())
                 }
             ),
             onAction = {}

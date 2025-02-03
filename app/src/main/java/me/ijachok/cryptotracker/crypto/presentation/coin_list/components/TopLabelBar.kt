@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -27,7 +26,11 @@ import me.ijachok.cryptotracker.R
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 
 @Composable
-fun TopLabelBar(modifier: Modifier = Modifier, title:String = stringResource(R.string.app_name), iconButton: @Composable () -> Unit) {
+fun TopLabelBar(
+    modifier: Modifier = Modifier,
+    title: String = stringResource(R.string.app_name),
+    iconButton: @Composable () -> Unit
+) {
     Row(
         modifier
             .fillMaxWidth()

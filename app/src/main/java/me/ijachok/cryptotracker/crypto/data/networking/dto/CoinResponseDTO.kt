@@ -4,5 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CoinResponseDTO(
-    val data:CoinDTO
+    val data:CoinDTO,
+    val error:String? = null
 )

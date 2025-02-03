@@ -11,15 +11,15 @@ data class CoinPortfolioUi(
     val rank: Int,
     val name: String,
     val symbol: String,
-    val amount:DisplayableNumber,
+    val amount: DisplayableNumber,
     val marketCapUsd: DisplayableNumber,
     val priceUsd: DisplayableNumber,
     val changePercent24Hr: DisplayableNumber,
     @DrawableRes val iconRes: Int,
-    val coinPriceHistory:List<DataPoint> = emptyList()
+    val coinPriceHistory: List<DataPoint> = emptyList()
 )
 
-fun CoinPortfolio.toCoinPortfolioUI():CoinPortfolioUi{
+fun CoinPortfolio.toCoinPortfolioUI(): CoinPortfolioUi {
     return CoinPortfolioUi(
         id = id,
         rank = rank,
@@ -27,8 +27,23 @@ fun CoinPortfolio.toCoinPortfolioUI():CoinPortfolioUi{
         symbol = symbol,
         amount = amountOwned.toDisplayableNumber(),
         priceUsd = priceUsd.toDisplayableNumber(),
-        marketCapUsd = (marketCapUsd?:0.0).toDisplayableNumber(),
-        changePercent24Hr = (changePercent24Hr?:0.0).toDisplayableNumber(),
+        marketCapUsd = (marketCapUsd ?: 0.0).toDisplayableNumber(),
+        changePercent24Hr = (changePercent24Hr ?: 0.0).toDisplayableNumber(),
         iconRes = getDrawableIdForCoin(symbol)
     )
 }
+
+fun CoinPortfolioUi.toCoinUi(): CoinUi =
+    CoinUi(
+        id = id,
+        rank = rank,
+        name = name,
+        symbol = symbol,
+        marketCapUsd = marketCapUsd,
+        priceUsd = priceUsd,
+        changePercent24Hr = changePercent24Hr,
+        iconRes = iconRes,
+        coinPriceHistory = coinPriceHistory
+
+    )
+

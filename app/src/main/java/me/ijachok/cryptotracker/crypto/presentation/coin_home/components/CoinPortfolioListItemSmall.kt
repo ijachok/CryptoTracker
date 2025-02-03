@@ -29,7 +29,7 @@ import me.ijachok.cryptotracker.crypto.presentation.coin_list.components.PriceCh
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 
 @Composable
-fun CoinPortfolioListItem(
+fun CoinPortfolioListItemSmall(
     modifier: Modifier = Modifier,
     coinPortfolioUi: CoinPortfolioUi,
     totalBalance: Double
@@ -95,7 +95,7 @@ fun CoinPortfolioListItem(
 @Composable
 private fun CPLIPrev() {
     CryptoTrackerTheme {
-        CoinPortfolioListItem(
+        CoinPortfolioListItemSmall(
             Modifier
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxWidth(),

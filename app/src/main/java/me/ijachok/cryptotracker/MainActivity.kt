@@ -21,7 +21,6 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
-import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
@@ -38,13 +37,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import me.ijachok.cryptotracker.core.navigation.AdaptiveCoinListDetailPane
 import me.ijachok.cryptotracker.core.navigation.AdaptiveCoinSearchDetailPane
 import me.ijachok.cryptotracker.core.navigation.AppDestinations
+import me.ijachok.cryptotracker.core.navigation.HomeTab
 import me.ijachok.cryptotracker.core.presentation.util.ObserveAsEvents
 import me.ijachok.cryptotracker.core.presentation.util.toString
 import me.ijachok.cryptotracker.crypto.domain.CoinEvent
-import me.ijachok.cryptotracker.crypto.presentation.coin_home.CoinHomeAction
 import me.ijachok.cryptotracker.crypto.presentation.coin_home.CoinHomeScreen
 import me.ijachok.cryptotracker.crypto.presentation.coin_home.CoinHomeViewModel
-import me.ijachok.cryptotracker.crypto.presentation.coin_list.CoinListAction
 import me.ijachok.cryptotracker.ui.theme.CryptoTrackerTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -73,33 +71,9 @@ class MainActivity : ComponentActivity() {
                         selectedTextColor = MaterialTheme.colorScheme.onSurface,
                         unselectedIconColor = MaterialTheme.colorScheme.outline,
                         unselectedTextColor = MaterialTheme.colorScheme.outline,
-                        ),
+                    ),
                     navigationRailItemColors = NavigationRailItemDefaults.colors()
                 )
-
-                val coinHomeViewModel: CoinHomeViewModel = koinViewModel()
-                val homeState by coinHomeViewModel.state.collectAsStateWithLifecycle()
-                val context = this@MainActivity
-
-                ObserveAsEvents(coinHomeViewModel.events) { event ->
-                    when (event) {
-                        is CoinEvent.NetError -> {
-                            Toast.makeText(
-                                context,
-                                event.error.toString(context),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-
-                        is CoinEvent.LocalDataError -> {
-                            Toast.makeText(
-                                context,
-                                event.error.toString(context),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                }
 
                 NavigationSuiteScaffold(
                     navigationSuiteItems = {
@@ -111,7 +85,7 @@ class MainActivity : ComponentActivity() {
                                         contentDescription = stringResource(appDestination.contentDescription)
                                     )
                                 },
-                                label = { Text(stringResource(appDestination.contentDescription)) },
+                                label = { Text(stringResource(appDestination.label)) },
                                 selected = appDestination == currentDestination,
                                 onClick = { currentDestination = appDestination },
                                 colors = navigationSuiteItemColors
@@ -146,14 +120,11 @@ class MainActivity : ComponentActivity() {
                                 innerPaddingValues = WindowInsets.systemBars.asPaddingValues()
                             )
 
-                            AppDestinations.HOME -> CoinHomeScreen(
-                                modifier = Modifier,
-                                paddingValues = WindowInsets.systemBars.asPaddingValues(),
-                                state = homeState
-                            ) { action ->
-                                coinHomeViewModel.onAction(action)
+                            AppDestinations.HOME -> HomeTab(
+                                paddingValues = WindowInsets.systemBars.asPaddingValues()
+                            )
 
-                            }
+                            else -> {}
                         }
                     }
 

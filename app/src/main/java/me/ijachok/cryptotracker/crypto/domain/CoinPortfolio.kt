@@ -1,5 +1,8 @@
 package me.ijachok.cryptotracker.crypto.domain
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CoinPortfolio(
     val id: String,
     val rank: Int,
